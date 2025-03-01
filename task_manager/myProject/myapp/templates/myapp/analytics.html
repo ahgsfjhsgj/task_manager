@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="analytics-container">
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-header">
+                <h3>Task Overview</h3>
+                <i class="fas fa-tasks text-primary"></i>
+            </div>
+            <div class="stat-value">{{ total_tasks }}</div>
+            <div class="stat-label">Total Tasks</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <h3>Completion Rate</h3>
+                <i class="fas fa-chart-pie text-success"></i>
+            </div>
+            <div class="stat-value">{{ completion_rate }}%</div>
+            <div class="stat-label">Tasks Completed</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <h3>Overdue Tasks</h3>
+                <i class="fas fa-clock text-danger"></i>
+            </div>
+            <div class="stat-value">{{ overdue_count }}</div>
+            <div class="stat-label">Tasks Overdue</div>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <div class="chart-card">
+            <h3>Task Status Distribution</h3>
+            <div class="status-bars">
+                {% for status in status_bars %}
+                <div class="status-bar">
+                    <div class="label">{{ status.label }}</div>
+                    <div class="bar-container">
+                        <div class="bar" data-width="{{ status.percentage }}"></div>
+                    </div>
+                    <div class="value">{{ status.count }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.bar').forEach(bar => {
+    bar.style.width = bar.dataset.width + '%';
+});
+</script>
+{% endblock %} 

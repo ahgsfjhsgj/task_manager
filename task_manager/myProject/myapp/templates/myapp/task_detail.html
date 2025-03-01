@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+    {% if messages %}
+    <div class="messages-container mb-4">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="task-detail-card">
+        <div class="task-content">
+            <div class="task-detail-header">
+                <div class="d-flex align-items-center gap-3">
+                    <h1>{{ task.title }}</h1>
+                    <span class="badge status-badge {% if task.status == 'OVERDUE' %}status-danger
+                                {% elif task.status == 'COMPLETED' %}status-success
+                                {% else %}status-warning{% endif %}">
+                        {{ task.status }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="task-meta">
+                <div class="meta-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Due Date: {{ task.due_date|date:"M d, Y" }}</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Created: {{ task.created_at|date:"M d, Y" }}</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-pencil-alt"></i>
+                    <span>Last Updated: {{ task.updated_at|date:"M d, Y" }}</span>
+                </div>
+            </div>
+
+            <div class="task-description">
+                <h5>Description</h5>
+                <div class="description-content">
+                    {{ task.description|linebreaks|default:"No description provided." }}
+                </div>
+            </div>
+        </div>
+
+        <div class="task-actions">
+            {% if task.status != 'COMPLETED' %}
+            <form method="post" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" name="mark_complete" class="btn btn-success" title="Mark task as complete">
+                    <i class="fas fa-check me-2"></i>Complete Task
+                </button>
+            </form>
+            {% endif %}
+            <a href="{% url 'task_update' task.id %}" class="btn btn-primary" title="Edit task">
+                <i class="fas fa-edit me-2"></i>Edit
+            </a>
+            <a href="{% url 'task_delete' task.id %}" class="btn btn-danger" title="Delete task">
+                <i class="fas fa-trash me-2"></i>Delete
+            </a>
+            <a href="{% url 'task_list' %}" class="btn btn-outline-secondary" title="Return to task list">
+                <i class="fas fa-arrow-left me-2"></i>Back
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %} 
