@@ -125,8 +125,6 @@ Your Task Manager project is now set up and running! 🎉
 ---
 
 
----
-
 ## License
 
 This project is licensed under the MIT License.
